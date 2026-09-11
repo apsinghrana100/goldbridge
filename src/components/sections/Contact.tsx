@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageSquare, ShieldCheck, Map } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageSquare, ShieldCheck, Map, Loader2 } from 'lucide-react';
 import { COMPANY_DETAILS } from '@/data/goldBridgeData';
 
 export default function Contact() {
@@ -14,17 +14,46 @@ export default function Contact() {
     message: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      await fetch(`https://formsubmit.co/ajax/${COMPANY_DETAILS.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          'Client Name': formData.name,
+          'Company Name': formData.company,
+          'Phone Number': formData.phone,
+          'Email Address': formData.email,
+          'Trade Requirement Details': formData.message,
+          _subject: `Trade Finance Consultation: ${formData.name} (${formData.company})`,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+    } catch (err) {
+      console.error('Submission error:', err);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
   };
 
-  const mailtoLink = `mailto:${COMPANY_DETAILS.email}?subject=${encodeURIComponent(
-    `Trade Finance Inquiry from ${formData.name || 'Client'} - ${formData.company || ''}`
-  )}&body=${encodeURIComponent(
-    `Name: ${formData.name}\nCompany: ${formData.company}\nPhone: ${formData.phone}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+  const whatsappInquiryLink = `https://wa.me/${COMPANY_DETAILS.phoneClean.replace('+', '')}?text=${encodeURIComponent(
+    `*Trade Finance Consultation Request*\n\n` +
+    `*Client:* ${formData.name}\n` +
+    `*Company:* ${formData.company}\n` +
+    `*Phone:* ${formData.phone}\n` +
+    `*Email:* ${formData.email}\n\n` +
+    `*Trade Requirement:* \n${formData.message}`
   )}`;
 
   return (
@@ -65,16 +94,18 @@ export default function Contact() {
                 </div>
                 <h3 className="text-2xl font-extrabold text-[#0B5D4B]">Consultation Request Received</h3>
                 <p className="text-[#555555] max-w-md mx-auto text-sm leading-relaxed">
-                  Thank you, <strong>{formData.name}</strong>! Senior consultant <strong>{COMPANY_DETAILS.consultantName}</strong> will review your trade requirements and contact you within 2 business hours.
+                  Thank you, <strong>{formData.name}</strong>! Your inquiry has been transmitted to our banking team at <strong>{COMPANY_DETAILS.email}</strong>. Senior consultant <strong>{COMPANY_DETAILS.consultantName}</strong> will review your trade requirements and contact you within 2 business hours.
                 </p>
 
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <div className="pt-3 flex flex-wrap items-center justify-center gap-3">
                   <a
-                    href={mailtoLink}
-                    className="px-5 py-2.5 rounded-xl border border-[#0B5D4B] text-[#0B5D4B] font-bold text-xs flex items-center gap-1.5 hover:bg-[#0B5D4B] hover:text-white transition-all"
+                    href={whatsappInquiryLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2.5 rounded-xl bg-[#22C55E] text-white font-bold text-xs flex items-center gap-1.5 hover:bg-[#16a34a] shadow-md transition-all"
                   >
-                    <Mail className="w-4 h-4 text-[#C9A227]" />
-                    <span>Send Email Directly</span>
+                    <MessageSquare className="w-4 h-4 text-white" />
+                    <span>Instant WhatsApp Copy</span>
                   </a>
 
                   <button
@@ -165,13 +196,25 @@ export default function Contact() {
                 </div>
 
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.98 } : {}}
                   type="submit"
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-[#0B5D4B] to-[#074336] text-white font-bold text-sm shadow-xl shadow-[#0B5D4B]/20 flex items-center justify-center gap-2 hover:from-[#074336] hover:to-[#0B5D4B] transition-all"
+                  disabled={isSubmitting}
+                  className={`w-full py-4 rounded-xl bg-gradient-to-r from-[#0B5D4B] to-[#074336] text-white font-bold text-sm shadow-xl shadow-[#0B5D4B]/20 flex items-center justify-center gap-2 hover:from-[#074336] hover:to-[#0B5D4B] transition-all ${
+                    isSubmitting ? 'opacity-85 cursor-wait' : ''
+                  }`}
                 >
-                  <span>Submit Confidential Consultation</span>
-                  <Send className="w-4 h-4 text-[#C9A227]" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 text-[#C9A227] animate-spin" />
+                      <span>Transmitting Consultation Details...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Submit Confidential Consultation</span>
+                      <Send className="w-4 h-4 text-[#C9A227]" />
+                    </>
+                  )}
                 </motion.button>
               </form>
             )}
