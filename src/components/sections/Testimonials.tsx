@@ -79,11 +79,22 @@ export default function Testimonials() {
 
                 {/* Client Profile */}
                 <div className="flex items-center gap-4 pt-4 border-t border-slate-200">
-                  <img
-                    src={activeReview.image}
-                    alt={activeReview.name}
-                    className="w-14 h-14 rounded-2xl object-cover border-2 border-[#C9A227] shadow-md"
-                  />
+                  {activeReview.image ? (
+                    <img
+                      src={activeReview.image}
+                      alt={activeReview.name}
+                      className="w-13 h-13 rounded-2xl object-cover border-2 border-[#C9A227] shadow-md"
+                    />
+                  ) : (
+                    <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0B5D4B] to-[#074336] text-[#C9A227] font-extrabold text-base flex items-center justify-center border border-[#C9A227]/40 shadow-md flex-shrink-0 font-mono tracking-wider">
+                      {activeReview.name
+                        .split(' ')
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((n) => n[0])
+                        .join('')}
+                    </div>
+                  )}
                   <div>
                     <h4 className="text-lg font-bold text-[#0B5D4B]">
                       {activeReview.name}

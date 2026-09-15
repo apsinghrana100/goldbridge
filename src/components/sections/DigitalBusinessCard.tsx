@@ -12,23 +12,22 @@ export default function DigitalBusinessCard() {
   const generateVCardData = () => {
     return `BEGIN:VCARD
 VERSION:3.0
+N:Mehta;Mitesh;;Mr.;
 FN:Mr. Mitesh Mehta
-TITLE:Senior Business Consultant
 ORG:Gold Bridge Capital Solution
+TITLE:Senior Business Consultant
 TEL;TYPE=CELL,VOICE:${COMPANY_DETAILS.phoneClean}
 EMAIL;TYPE=WORK,INTERNET:${COMPANY_DETAILS.email}
-URL:https://goldbridgecapital.com
-NOTE:Trade Finance & Banking Consultancy - SBLC/SLOC Facilitation
+URL:https://goldbridge.in
+ADR;TYPE=WORK:;;A 504 Center Point Near Civil Ring Road;Surat;Gujarat;395010;India
+NOTE:Gold Bridge Capital Solution - Trade Finance & Banking Consultancy - SBLC/SLOC Facilitation
 END:VCARD`;
   };
 
   const handleDownloadVCard = () => {
-    const vcardData = generateVCardData();
-    const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Mitesh_Mehta_GoldBridge.vcf');
+    link.href = '/mitesh-mehta.vcf';
+    link.setAttribute('download', 'Mr_Mitesh_Mehta_GoldBridge.vcf');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -40,7 +39,7 @@ END:VCARD`;
         title: `${COMPANY_DETAILS.consultantName} - ${COMPANY_DETAILS.name}`,
         text: `Connect with ${COMPANY_DETAILS.consultantName}, ${COMPANY_DETAILS.consultantTitle} at ${COMPANY_DETAILS.name}`,
         url: window.location.href,
-      }).catch(() => {});
+      }).catch(() => { });
     } else {
       navigator.clipboard.writeText(window.location.href);
       setCopied(true);
@@ -51,7 +50,7 @@ END:VCARD`;
   return (
     <section id="business-card" className="py-24 bg-[#F8FAF8] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="px-4 py-1.5 rounded-full bg-[#0B5D4B]/10 border border-[#0B5D4B]/20 text-[#0B5D4B] text-xs font-bold uppercase tracking-wider">
@@ -77,15 +76,16 @@ END:VCARD`;
           <div className="absolute top-0 left-0 right-0 h-4 bg-emerald-gradient" />
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pt-4">
-            
+
             {/* Left Avatar & Consultant Info */}
             <div className="md:col-span-7 space-y-6 text-center md:text-left">
               <div className="flex flex-col sm:flex-row items-center gap-5 justify-center md:justify-start">
                 <div className="w-24 h-24 rounded-2xl bg-emerald-gradient p-1 shadow-xl flex-shrink-0">
                   <img
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300"
+                    src={COMPANY_DETAILS.consultantPhoto}
                     alt={COMPANY_DETAILS.consultantName}
                     className="w-full h-full object-cover rounded-[14px]"
+                    style={{ objectPosition: 'center 52%' }}
                   />
                 </div>
 
@@ -122,19 +122,20 @@ END:VCARD`;
                   <div className="w-8 h-8 rounded-xl bg-[#0B5D4B]/10 text-[#0B5D4B] flex items-center justify-center">
                     <Globe className="w-4 h-4" />
                   </div>
-                  <span className="font-bold text-[#555555]">goldbridgecapital.com</span>
+                  <span className="font-bold text-[#555555]">goldbridge.in</span>
                 </div>
               </div>
 
               {/* Action Buttons Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4">
-                <button
-                  onClick={handleDownloadVCard}
-                  className="px-4 py-3 rounded-xl bg-[#0B5D4B] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-[#074336] transition-all"
+                <a
+                  href="/mitesh-mehta.vcf"
+                  download="Mr_Mitesh_Mehta_GoldBridge.vcf"
+                  className="px-4 py-3 rounded-xl bg-[#0B5D4B] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-[#074336] transition-all cursor-pointer"
                 >
                   <Download className="w-4 h-4 text-[#C9A227]" />
                   <span>Save Contact</span>
-                </button>
+                </a>
 
                 <a
                   href={`tel:${COMPANY_DETAILS.phoneClean}`}
@@ -181,47 +182,26 @@ END:VCARD`;
               </span>
 
               {/* Interactive QR Code Visual */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                onClick={handleDownloadVCard}
-                className="p-4 bg-white rounded-2xl border border-[#C9A227]/50 shadow-lg cursor-pointer group relative"
+              <motion.a
+                href="/mitesh-mehta.vcf"
+                download="Mr_Mitesh_Mehta_GoldBridge.vcf"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.98 }}
+                className="p-3 bg-white rounded-2xl border-2 border-[#0B5D4B]/30 hover:border-[#0B5D4B] shadow-xl cursor-pointer group relative block transition-all"
+                title="Scan with phone camera or tap to save contact"
               >
-                {/* SVG Simulated Clean QR Code Visual */}
-                <svg className="w-36 h-36" viewBox="0 0 100 100" fill="none">
-                  {/* Position detection patterns */}
-                  <rect x="5" y="5" width="28" height="28" rx="4" fill="#0B5D4B" />
-                  <rect x="9" y="9" width="20" height="20" rx="2" fill="#FFFFFF" />
-                  <rect x="13" y="13" width="12" height="12" rx="1" fill="#C9A227" />
+                <img
+                  src="/images/mitesh-mehta-qr.png"
+                  alt={`Scan QR Code to save ${COMPANY_DETAILS.consultantName} contact details`}
+                  className="w-44 h-44 object-contain rounded-xl block mx-auto"
+                />
 
-                  <rect x="67" y="5" width="28" height="28" rx="4" fill="#0B5D4B" />
-                  <rect x="71" y="9" width="20" height="20" rx="2" fill="#FFFFFF" />
-                  <rect x="75" y="13" width="12" height="12" rx="1" fill="#C9A227" />
-
-                  <rect x="5" y="67" width="28" height="28" rx="4" fill="#0B5D4B" />
-                  <rect x="9" y="71" width="20" height="20" rx="2" fill="#FFFFFF" />
-                  <rect x="13" y="75" width="12" height="12" rx="1" fill="#C9A227" />
-
-                  {/* QR Data Grid Matrix */}
-                  <rect x="40" y="8" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="52" y="8" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="40" y="20" width="6" height="6" fill="#C9A227" />
-                  <rect x="48" y="26" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="8" y="40" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="20" y="48" width="6" height="6" fill="#C9A227" />
-                  <rect x="40" y="40" width="20" height="20" rx="4" fill="#0B5D4B" />
-                  <rect x="44" y="44" width="12" height="12" rx="2" fill="#C9A227" />
-                  <rect x="68" y="40" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="80" y="48" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="40" y="68" width="6" height="6" fill="#C9A227" />
-                  <rect x="52" y="76" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="68" y="68" width="6" height="6" fill="#0B5D4B" />
-                  <rect x="80" y="80" width="12" height="12" rx="2" fill="#0B5D4B" />
-                </svg>
-
-                <div className="absolute inset-0 bg-[#0B5D4B]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs p-2">
-                  <span>Tap to Download vCard</span>
+                <div className="absolute inset-0 bg-[#0B5D4B]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs p-3 text-center">
+                  <Download className="w-6 h-6 text-[#C9A227] mb-1.5" />
+                  <span className="font-bold">Tap to Save Contact</span>
+                  <span className="text-[10px] text-emerald-100 mt-0.5">Adds to Phone Contacts</span>
                 </div>
-              </motion.div>
+              </motion.a>
 
               <p className="text-[11px] text-[#555555] max-w-xs font-semibold leading-tight">
                 Scan or click to automatically save <strong>{COMPANY_DETAILS.consultantName}</strong> into your mobile address book.

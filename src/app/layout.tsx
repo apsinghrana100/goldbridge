@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: 'Gold Bridge Capital Solution | Trade Finance & Banking Consultancy',
     description:
       'Helping Importers, Exporters, Manufacturers and International Traders obtain SBLC, SLOC and Banking Facilitation through trusted banking channels.',
-    url: 'https://goldbridgecapital.com',
+    url: 'https://goldbridge.in',
     siteName: 'Gold Bridge Capital Solution',
     images: [{ url: '/images/gold-lotus-icon.png' }],
     locale: 'en_US',

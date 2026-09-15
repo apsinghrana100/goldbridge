@@ -35,7 +35,7 @@ export interface Testimonial {
   company: string;
   role: string;
   review: string;
-  image: string;
+  image?: string;
   rating: number;
 }
 
@@ -51,11 +51,12 @@ export const COMPANY_DETAILS = {
   category: 'Trade Finance & Structured Banking Consultancy',
   consultantName: 'Mr. Mitesh Mehta',
   consultantTitle: 'Senior Business Consultant',
+  consultantPhoto: '/images/mitesh-mehta.png',
   phone: '+91 98242 91055',
   phoneClean: '+919824291055',
   whatsappUrl: 'https://wa.me/919824291055',
   email: 'goldbridge2026@gmail.com',
-  address: 'Financial District, Executive Chambers, Gateway Towers, International Business Zone',
+  address: 'A 504, Center Point, Near Civil #, Ring Road Surat, Gujarat, India-395010',
   workingHours: 'Monday - Saturday: 9:00 AM - 7:00 PM (IST)',
 };
 
@@ -271,7 +272,6 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     company: 'Karan Trade Logistics',
     role: 'Managing Director',
     review: 'Gold Bridge Capital Solution provided impeccable guidance in securing our SBLC for a $4.2M scrap metal import contract. Mr. Mitesh Mehta’s attention to detail and banking network made all the difference.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250',
     rating: 5,
   },
   {
@@ -280,7 +280,6 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     company: 'Lifeguard Industrial Machinery Corp',
     role: 'Chief Operating Officer',
     review: 'Navigating international SLOC requirements used to take us months. With Gold Bridge’s documentation audit, our issuing process was seamless. Highly recommended for serious international traders.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=250',
     rating: 5,
   },
   {
@@ -289,7 +288,6 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     company: 'Gold Commodity Exports',
     role: 'Head of Gold Commodity Exports',
     review: '100% confidential and highly professional. Gold Bridge helped us structure complex trade guarantees across European issuing banks without any hassle. True partners in global commerce.',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250',
     rating: 5,
   },
 ];
